@@ -14,8 +14,6 @@ version = common.version()
 uid = common.authenticate(db,username,password,{})
 
 app = FastAPI()
-PORT = 5000
-DEBUG = False
 #datos = [{"id": 1 ,"lenguaje":"Python"}, 
 #        {"id": 2,"lenguaje":"Java"}, 
 #        {"id": 3,"lenguaje":"PHP"},
