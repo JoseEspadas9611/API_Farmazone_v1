@@ -14,11 +14,7 @@ version = common.version()
 uid = common.authenticate(db,username,password,{})
 
 app = FastAPI()
-#datos = [{"id": 1 ,"lenguaje":"Python"}, 
-#        {"id": 2,"lenguaje":"Java"}, 
-#        {"id": 3,"lenguaje":"PHP"},
-#        {"id": 4,"lenguaje":"Angular"}, 
-#        {"id": 5,"lenguaje":"C#"}]
+""" Api para generar el JSON de Corner y Rappi para limentarlos desde Odoo"""
 
 class Item(BaseModel):
     name: str
@@ -26,9 +22,19 @@ class Item(BaseModel):
     is_offer: bool = None
 
 
-def someProducts(db,uid,password):
-    someProducts = models.execute_kw(db,uid,password,'product.product', 'search_read',
-                [],{'fields': ['name','lst_price','default_code']})
+def traerProductos(db,uid,password):
+    someProducts = models.execute_kw(db,uid,password,'product.template', 'search_read',
+                [],{'fields': ['name','lst_price','default_code','qty_available']})
+    return someProducts
+
+def traerPrecioCorner(db,uid,password,id):
+    id2 = int(id)
+    someProducts = models.execute_kw(db,uid,password,'product.pricelist.item', 'search_read',
+                [])
+    return someProducts
+
+def traerImpuestos(db,uid,password):
+    someProducts = models.execute_kw(db,uid,password,'account.tax', 'search_read',[])
     return someProducts
 
 @app.get("/")
@@ -37,13 +43,30 @@ def raiz():
     mensaje = "Estamos trabajando en obtener los datos"
     return mensaje
 
+@app.get("/GetImpuestos")
+def getImpuestos():
+    impuestos = traerImpuestos(db,uid,password)
+    return impuestos
 
-@app.get("/traerDatos")
+@app.get("/GetIntegracionFarmazone")
 def traerDatos():
-    datos = someProducts(db,uid,password)
-    print(len(datos))
+    datos = traerProductos(db,uid,password)
+    productos = []
+    print(datos[1])
+    for i in range(len(datos)):
+        precios = traerPrecioCorner(db,uid,password,datos[i]['id'])
+        for j in range(len(precios)):
+            if precios[j]['pricelist_id'][0] == 3:
+                precio = precios[j]['price'].replace('$ ','')
+                productos.append({
+                    "SKU":datos[i]['default_code'],
+                    "BRANCH_ID":0,
+                    "STOCK":datos[i]['qty_available'],
+                    "PRICE":float(precio)
+                })
+                break
     sin_codificar = json.dumps(datos)
-    return datos
+    return productos
 
 @app.put("/agregar/{item_id}")
 def update_item(item_id:int, item:Item):
@@ -52,3 +75,4 @@ def update_item(item_id:int, item:Item):
 @app.delete("/eliminar")
 def eliminar(request:Request):
     print('prueba')
+
