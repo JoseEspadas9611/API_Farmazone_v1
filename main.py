@@ -27,6 +27,8 @@ def traerProductos(db,uid,password):
                 [],{'fields': ['name','lst_price','default_code','qty_available']})
     return someProducts
 
+datos = traerProductos(db,uid,password)
+
 def traerPrecioCorner(db,uid,password,id):
     id2 = int(id)
     someProducts = models.execute_kw(db,uid,password,'product.pricelist.item', 'search_read',
@@ -50,7 +52,6 @@ def getImpuestos():
 
 @app.get("/GetIntegracionFarmazone")
 def getIntegracionFarmazone():
-    datos = traerProductos(db,uid,password)
     productos = []
     for i in range(len(datos)):
         precios = traerPrecioCorner(db,uid,password,datos[i]['id'])
