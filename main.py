@@ -49,10 +49,9 @@ def getImpuestos():
     return impuestos
 
 @app.get("/GetIntegracionFarmazone")
-def traerDatos():
+def getIntegracionFarmazone():
     datos = traerProductos(db,uid,password)
     productos = []
-    print(datos[1])
     for i in range(len(datos)):
         precios = traerPrecioCorner(db,uid,password,datos[i]['id'])
         for j in range(len(precios)):
