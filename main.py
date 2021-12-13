@@ -51,7 +51,7 @@ def getImpuestos():
     impuestos = someProducts(db,uid,password)
     return impuestos
 
-@app.post("/pruebaAPI/connect/token")
+@app.get("/pruebaAPI/connect/token")
 def getImpuestos():
     mensaje = "Datos que pudimos Rescatar:..... HOLI CRAYOLI"
     return mensaje
