@@ -20,19 +20,20 @@ class Item(BaseModel):
     name: str
     price: float
     is_offer: bool = None
-
+def someProducts(db,uid,password):
+    someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
+                [[['company_id', '=', 2]]],{'fields': ['product_id','available_quantity']})
+    return someProducts
 
 def traerProductos(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'product.template', 'search_read',
                 [],{'fields': ['name','lst_price','default_code','qty_available']})
     return someProducts
 
-datos = traerProductos(db,uid,password)
-
-def traerPrecioCorner(db,uid,password,id):
-    id2 = int(id)
+def traerPrecioCorner(db,uid,password):
+    #id2 = int(id)
     someProducts = models.execute_kw(db,uid,password,'product.pricelist.item', 'search_read',
-                [])
+                [[['pricelist_id', '=', 3]]],{'fields': ['pricelist_id','product_tmpl_id','price']})
     return someProducts
 
 def traerImpuestos(db,uid,password):
@@ -47,25 +48,36 @@ def raiz():
 
 @app.get("/GetImpuestos")
 def getImpuestos():
-    impuestos = traerImpuestos(db,uid,password)
+    impuestos = someProducts(db,uid,password)
     return impuestos
+
+@app.get("/pruebaAPI")
+def getImpuestos():
+    mensaje = "Datos que pudimos Rescatar:..... HOLI CRAYOLI"
+    return mensaje
 
 @app.get("/GetIntegracionFarmazone")
 def getIntegracionFarmazone():
     productos = []
+    datos = someProducts(db,uid,password)
+    #print(datos[0])
+    preciosCorner = traerPrecioCorner(db,uid,password)
+    #print(preciosCorner[0])
+    find_sku = lambda Object_response: Object_response['product_id'][1].split(' ')[0][1:-1]
     for i in range(len(datos)):
-        precios = traerPrecioCorner(db,uid,password,datos[i]['id'])
-        for j in range(len(precios)):
-            if precios[j]['pricelist_id'][0] == 3:
-                precio = precios[j]['price'].replace('$ ','')
+        field = {'product_id': datos[i]['product_id']}
+        sku = find_sku(field)
+        for j in range(len(preciosCorner)):
+            if datos[i]['product_id'][0] == preciosCorner[j]['product_tmpl_id'][0]:
+                precio = preciosCorner[j]['price'].replace('$ ','')
                 productos.append({
-                    "SKU":datos[i]['default_code'],
-                    "BRANCH_ID":0,
-                    "STOCK":datos[i]['qty_available'],
-                    "PRICE":float(precio)
+                     "SKU":sku,
+                     "BRANCH_ID":0,
+                     "STOCK":datos[i]['available_quantity'],
+                     "PRICE":float(precio)
                 })
                 break
-    sin_codificar = json.dumps(datos)
+    print(len(productos))
     return productos
 
 @app.put("/agregar/{item_id}")
