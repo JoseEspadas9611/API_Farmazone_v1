@@ -51,10 +51,13 @@ def getImpuestos():
     impuestos = someProducts(db,uid,password)
     return impuestos
 
-@app.get("/pruebaAPI/connect/token")
+@app.get("/pruebaAPI")
 def getImpuestos():
     mensaje = "Datos que pudimos Rescatar:..... HOLI CRAYOLI"
-    return mensaje
+    value = {
+         "data":mensaje
+    }
+    return json.dumps(value)
 
 @app.get("/GetIntegracionFarmazone")
 def getIntegracionFarmazone():
