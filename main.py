@@ -94,7 +94,7 @@ async def update_item(item:Item):
     value = {"name": item.name, 
             "message": item.message,
             "stock": item.stock}
-    return json.dumps(value)
+    return item
 
 
 @app.delete("/eliminar")
