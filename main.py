@@ -92,7 +92,7 @@ def update_item(item_id:int, item:Item):
 async def update_item(item:Item):
     value = {"item_name": item.name, 
             "item_message": item.message}
-    return json.dump(value)
+    return json.dumps(value)
 
 
 @app.delete("/eliminar")
