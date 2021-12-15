@@ -20,6 +20,7 @@ class Item(BaseModel):
     name: str
     price: float
     is_offer: bool = None
+
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
                 [[['company_id', '=', 2]]],{'fields': ['product_id','available_quantity']})
@@ -86,6 +87,11 @@ def getIntegracionFarmazone():
 @app.put("/agregar/{item_id}")
 def update_item(item_id:int, item:Item):
     return {"item_name": item.name, "item_id": item_id}
+
+@app.post("/api/pruebaAPI/EnviarMensaje/name/{name}/message/{message}")
+def update_item(name:str, message:str):
+    return {"item_name": name, "item_message": message}
+
 
 @app.delete("/eliminar")
 def eliminar(request:Request):
