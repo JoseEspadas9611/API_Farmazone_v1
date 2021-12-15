@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 import json
+from fastapi.params import Path
 from pydantic import BaseModel
 import xmlrpc.client
 import json
@@ -18,8 +19,7 @@ app = FastAPI()
 
 class Item(BaseModel):
     name: str
-    price: float
-    is_offer: bool = None
+    message: str = None
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
@@ -88,9 +88,9 @@ def getIntegracionFarmazone():
 def update_item(item_id:int, item:Item):
     return {"item_name": item.name, "item_id": item_id}
 
-@app.post("/api/pruebaAPI/EnviarMensaje/name/{name}/message/{message}")
-def update_item(name:str, message:str):
-    return {"item_name": name, "item_message": message}
+@app.post("/api/pruebaAPI/EnviarMensaje/name/{item_id}")
+async def update_item(item:Item):
+    return {"item_name": item.name, "item_message": item.message}
 
 
 @app.delete("/eliminar")
