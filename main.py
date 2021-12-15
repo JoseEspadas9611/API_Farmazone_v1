@@ -20,6 +20,7 @@ app = FastAPI()
 class Item(BaseModel):
     name: str
     message: str = None
+    stock: int
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
@@ -90,8 +91,9 @@ def update_item(item_id:int, item:Item):
 
 @app.post("/api/pruebaAPI/EnviarMensaje")
 async def update_item(item:Item):
-    value = {"item_name": item.name, 
-            "item_message": item.message}
+    value = {"name": item.name, 
+            "message": item.message,
+            "stock": item.stock}
     return json.dumps(value)
 
 
