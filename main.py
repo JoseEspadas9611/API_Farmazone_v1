@@ -21,6 +21,14 @@ class Item(BaseModel):
     name: str
     message: str = None
     stock: int
+class Historial(BaseModel):
+    tienda: str
+    fecha_emision: str
+    importe: str
+    no_ticket: int
+    estado:str
+    fecha_captura: str
+    folio:int
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
@@ -95,6 +103,10 @@ async def update_item(item:Item):
             "message": item.message,
             "stock": item.stock}
     return item
+
+@app.post("/api/pruebaAPI/BuscarHistorial")
+async def get_historial(historial:Historial):
+    return historial
 
 
 @app.delete("/eliminar")
