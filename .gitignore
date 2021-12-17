@@ -4,3 +4,4 @@ env/Lib
 env/Scripts
 env/Lib/site-packages/pip-21.1.2.dist-info/INSTALLER
 *.txt
+*.pyc
