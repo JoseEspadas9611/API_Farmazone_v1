@@ -56,58 +56,58 @@ def searchHistorial(estate, year, month):
     db = client.get_database('PREVIVALE')
     if month == 'enero':
         mes = '01'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"31"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"31"
     elif month == 'febrero':
         mes = '02'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"28"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"28"
     elif month == 'marzo':
         mes = '03'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"31"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"31"
     elif month == 'abril':
         mes = '04'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"30"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"30"
     elif month == 'mayo':
         mes = '05'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"31"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"31"
     elif month == 'junio':
         mes = '06'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"30"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"30"
     elif month == 'julio':
         mes = '07'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"31"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"31"
     elif month == 'agosto':
         mes = '08'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"31"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"31"
     elif month == 'septiembre':
         mes = '09'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"30"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"30"
     elif month == 'octubre':
         mes = '10'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"31"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"31"
     elif month == 'noviembre':
         mes = '11'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"30"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"30"
     elif month == 'diciembre':
         mes = '12'
-        fecha_inicio =str(year)+"/"+mes+"01"
-        fecha_fin = str(year)+"/"+mes+"31"
+        fecha_inicio =str(year)+"/"+mes+"/"+"01"
+        fecha_fin = str(year)+"/"+mes+"/"+"31"
         
     fecha_dt_inicio = datetime.strptime(fecha_inicio,'%Y-%m-%dT00:00.00Z')
-    fecha_dt_fin = datetime.strptime(fecha_inicio,'%Y-%m-%dT00:00.00Z')
+    fecha_dt_fin = datetime.strptime(fecha_fin,'%Y-%m-%dT00:00.00Z')
     consulta = {
         "state": estate,
-        "creation_date" : {"$gte" : fecha_dt_inicio, "$lte" : fecha_dt_fin}
+        "load_date" : {"$gte" : fecha_dt_inicio, "$lte" : fecha_dt_fin}
         }
     claves = db.historial.find(consulta)
     # claves = db.claves.find({})
