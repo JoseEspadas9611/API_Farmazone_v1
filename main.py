@@ -110,7 +110,7 @@ def searchHistorial(estate, year, month):
         "state": estate,
         "load_date" : {"$gte" : fecha_dt_inicio, "$lte" : fecha_dt_fin}
         }
-    claves = db.historial.find(consulta)
+    claves = db.historial.find(consulta,{'_id': 0})
     # claves = db.claves.find({})
     return list(claves)
 
