@@ -182,6 +182,23 @@ async def get_historial(historial:Historial):
     result_format = {"data":result}
     return result_format
 
+@app.post("/api/pruebaAPI/DetalleHistorial")
+async def get_historial(historial:Historial):
+    result_format = {"data":[{
+        "fecha_solicitud":"04/06/2021",
+        "folio":"002510",
+        "Estado":"Revisado",
+        "tipo_consumo":"Alimentos",
+        "fecha_captura":"05/06/21",
+        "no_ticket":"542140",
+        "fecha_y_hora_emision":"04/06/2021 20:54",
+        "fecha_solicitud_factura":"06/06/21",
+        "rfc_emisor":"DVI800013ICQ6",
+        "emisor":"Operadora Vips S de RL de CV",
+        "importe_total":"1256.50",
+    }]}
+    return result_format
+
 
 @app.delete("/eliminar")
 def eliminar(request:Request):
