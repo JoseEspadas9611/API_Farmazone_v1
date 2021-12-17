@@ -103,8 +103,8 @@ def searchHistorial(estate, year, month):
         fecha_inicio =str(year)+"/"+mes+"01"
         fecha_fin = str(year)+"/"+mes+"31"
         
-    fecha_dt_inicio = datetime.strptime(fecha_inicio,'%Y%m%dT00:00.00Z')
-    fecha_dt_fin = datetime.strptime(fecha_inicio,'%Y%m%dT00:00.00Z')
+    fecha_dt_inicio = datetime.strptime(fecha_inicio,'%Y-%m-%dT00:00.00Z')
+    fecha_dt_fin = datetime.strptime(fecha_inicio,'%Y-%m-%dT00:00.00Z')
     consulta = {
         "state": estate,
         "creation_date" : {"$gte" : fecha_dt_inicio, "$lte" : fecha_dt_fin}
