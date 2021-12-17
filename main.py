@@ -6,6 +6,7 @@ import xmlrpc.client
 import json
 import certifi
 import pymongo
+import random
 from datetime import datetime
 
 url = 'https://admindagsa-odoo-agsa.odoo.com'
@@ -34,6 +35,7 @@ class DetalleHistorial(BaseModel):
 
 class Images(BaseModel):
     base64: list = []
+    folio: str
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
@@ -126,11 +128,11 @@ def searchHistorial(estate, year, month):
     # claves = db.claves.find({})
     return list(claves)
 
-def insertImage(imagen):
+def insertImage(Datos):
     ca = certifi.where()
     client = pymongo.MongoClient(f"mongodb+srv://desarrollo:yatelasa123@cluster0.hziaa.mongodb.net/test?authSource=admin&replicaSet=atlas-8o2ch6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true",tlsCAFILE=ca)
     db = client.get_database('PREVIVALE')
-    claves = db.historial.insert_one({"imagen":imagen})
+    claves = db.historial.insert_one({"imagen":Datos.base64,"folio":Datos.folio})
     # claves = db.claves.find({})
     return claves
 
@@ -214,8 +216,8 @@ async def get_historial(detalle:DetalleHistorial):
 
 @app.post("/api/pruebaAPI/insertarImagen")
 async def get_historial(imagenes:Images):
-    print(imagenes.base64)
-    insert = insertImage(imagenes.base64)
+    imagenes.folio = random.randint(0,999999)
+    insert = insertImage(Images)
     print(insert)
     return "intento insertar Jejetl"
 
