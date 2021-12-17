@@ -32,6 +32,9 @@ class Historial(BaseModel):
 class DetalleHistorial(BaseModel):
     folio: str
 
+class Images(BaseModel):
+    base64: list = []
+
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
                 [[['company_id', '=', 2]]],{'fields': ['product_id','available_quantity']})
@@ -123,6 +126,14 @@ def searchHistorial(estate, year, month):
     # claves = db.claves.find({})
     return list(claves)
 
+def insertImage(imagen):
+    ca = certifi.where()
+    client = pymongo.MongoClient(f"mongodb+srv://desarrollo:yatelasa123@cluster0.hziaa.mongodb.net/test?authSource=admin&replicaSet=atlas-8o2ch6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true",tlsCAFILE=ca)
+    db = client.get_database('PREVIVALE')
+    claves = db.historial.insert_many(imagen)
+    # claves = db.claves.find({})
+    return claves
+
 @app.get("-")
 def raiz():
     #sin_codificar = json.dumps(datos)
@@ -200,6 +211,12 @@ async def get_historial(detalle:DetalleHistorial):
         "importe_total":"1256.50",
     }]}
     return result_format
+
+@app.post("/api/pruebaAPI/DetalleHistorial")
+async def get_historial(imagenes:Images):
+    insert = insertImage(imagenes.base64)
+    print(insert)
+    return "intento insertar Jejetl"
 
 
 @app.delete("/eliminar")
