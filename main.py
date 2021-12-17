@@ -130,7 +130,7 @@ def insertImage(imagen):
     ca = certifi.where()
     client = pymongo.MongoClient(f"mongodb+srv://desarrollo:yatelasa123@cluster0.hziaa.mongodb.net/test?authSource=admin&replicaSet=atlas-8o2ch6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true",tlsCAFILE=ca)
     db = client.get_database('PREVIVALE')
-    claves = db.historial.insert_many(imagen)
+    claves = db.historial.insert_many({"imagen":imagen})
     # claves = db.claves.find({})
     return claves
 
