@@ -178,7 +178,8 @@ async def update_item(item:Item):
 @app.post("/api/pruebaAPI/BuscarHistorial")
 async def get_historial(historial:Historial):
     result = searchHistorial(historial.state,historial.year,historial.month)
-    return result
+    result_format = {"data":result}
+    return result_format
 
 
 @app.delete("/eliminar")
