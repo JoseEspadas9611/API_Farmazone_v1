@@ -35,7 +35,7 @@ class DetalleHistorial(BaseModel):
 
 class Images(BaseModel):
     base64: list = []
-    folio: str
+    folio: str = None
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
@@ -128,11 +128,11 @@ def searchHistorial(estate, year, month):
     # claves = db.claves.find({})
     return list(claves)
 
-def insertImage(Datos):
+def insertImage(imagen, folio):
     ca = certifi.where()
     client = pymongo.MongoClient(f"mongodb+srv://desarrollo:yatelasa123@cluster0.hziaa.mongodb.net/test?authSource=admin&replicaSet=atlas-8o2ch6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true",tlsCAFILE=ca)
     db = client.get_database('PREVIVALE')
-    claves = db.historial.insert_one({"imagen":Datos.base64,"folio":Datos.folio})
+    claves = db.historial.insert_one({"imagen":imagen,"folio":folio})
     # claves = db.claves.find({})
     return claves
 
@@ -217,7 +217,7 @@ async def get_historial(detalle:DetalleHistorial):
 @app.post("/api/pruebaAPI/insertarImagen")
 async def get_historial(imagenes:Images):
     imagenes.folio = random.randint(0,999999)
-    insert = insertImage(Images)
+    insert = insertImage(imagenes.base64,imagenes.folio)
     print(insert)
     return "intento insertar Jejetl"
 
