@@ -212,7 +212,7 @@ async def get_historial(detalle:DetalleHistorial):
     }]}
     return result_format
 
-@app.post("/api/pruebaAPI/DetalleHistorial")
+@app.post("/api/pruebaAPI/insertarImagen")
 async def get_historial(imagenes:Images):
     insert = insertImage(imagenes.base64)
     print(insert)
