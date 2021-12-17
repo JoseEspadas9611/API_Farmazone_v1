@@ -214,6 +214,7 @@ async def get_historial(detalle:DetalleHistorial):
 
 @app.post("/api/pruebaAPI/insertarImagen")
 async def get_historial(imagenes:Images):
+    print(imagenes.base64)
     insert = insertImage(imagenes.base64)
     print(insert)
     return "intento insertar Jejetl"
