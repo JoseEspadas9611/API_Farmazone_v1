@@ -4,6 +4,9 @@ from fastapi.params import Path
 from pydantic import BaseModel
 import xmlrpc.client
 import json
+import certifi
+import pymongo
+from datetime import datetime
 
 url = 'https://admindagsa-odoo-agsa.odoo.com'
 db = 'admindagsa-odoo-agsa-prod-2509291'
@@ -21,14 +24,11 @@ class Item(BaseModel):
     name: str
     message: str = None
     stock: int
+
 class Historial(BaseModel):
-    tienda: str
-    fecha_emision: str
-    importe: str
-    no_ticket: int
-    estado:str
-    fecha_captura: str
-    folio:int
+    year: int
+    month: str
+    state: str
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
@@ -49,6 +49,69 @@ def traerPrecioCorner(db,uid,password):
 def traerImpuestos(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'account.tax', 'search_read',[])
     return someProducts
+
+def searchHistorial(estate, year, month):
+    ca = certifi.where()
+    client = pymongo.MongoClient(f"mongodb+srv://desarrollo:yatelasa123@cluster0.hziaa.mongodb.net/test?authSource=admin&replicaSet=atlas-8o2ch6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true",tlsCAFILE=ca)
+    db = client.get_database('PREVIVALE')
+    if month == 'enero':
+        mes = '01'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"31"
+    elif month == 'febrero':
+        mes = '02'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"28"
+    elif month == 'marzo':
+        mes = '03'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"31"
+    elif month == 'abril':
+        mes = '04'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"30"
+    elif month == 'mayo':
+        mes = '05'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"31"
+    elif month == 'junio':
+        mes = '06'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"30"
+    elif month == 'julio':
+        mes = '07'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"31"
+    elif month == 'agosto':
+        mes = '08'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"31"
+    elif month == 'septiembre':
+        mes = '09'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"30"
+    elif month == 'octubre':
+        mes = '10'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"31"
+    elif month == 'noviembre':
+        mes = '11'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"30"
+    elif month == 'diciembre':
+        mes = '12'
+        fecha_inicio =str(year)+"/"+mes+"01"
+        fecha_fin = str(year)+"/"+mes+"31"
+        
+    fecha_dt_inicio = datetime.strptime(fecha_inicio,'%Y%m%dT00:00.00Z')
+    fecha_dt_fin = datetime.strptime(fecha_inicio,'%Y%m%dT00:00.00Z')
+    consulta = {
+        "state": estate,
+        "creation_date" : {"$gte" : fecha_dt_inicio, "$lte" : fecha_dt_fin}
+        }
+    claves = db.historial.find(consulta)
+    # claves = db.claves.find({})
+    return list(claves)
 
 @app.get("/")
 def raiz():
@@ -106,7 +169,8 @@ async def update_item(item:Item):
 
 @app.post("/api/pruebaAPI/BuscarHistorial")
 async def get_historial(historial:Historial):
-    return historial
+    result = searchHistorial(historial.state,historial.year,historial.month)
+    return result
 
 
 @app.delete("/eliminar")
