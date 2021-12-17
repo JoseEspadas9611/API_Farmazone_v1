@@ -35,7 +35,6 @@ class DetalleHistorial(BaseModel):
 
 class Images(BaseModel):
     base64: list = []
-    folio: str = None
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
@@ -216,8 +215,8 @@ async def get_historial(detalle:DetalleHistorial):
 
 @app.post("/api/pruebaAPI/insertarImagen")
 async def get_historial(imagenes:Images):
-    imagenes.folio = random.randint(0,999999)
-    insert = insertImage(imagenes.base64,imagenes.folio)
+    folio = random.randint(0,999999)
+    insert = insertImage(imagenes.base64,folio)
     print(insert)
     return "intento insertar Jejetl"
 
