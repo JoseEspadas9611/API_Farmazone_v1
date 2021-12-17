@@ -51,6 +51,8 @@ def traerImpuestos(db,uid,password):
     return someProducts
 
 def searchHistorial(estate, year, month):
+    fecha_inicio = ""
+    fecha_fin = ""
     ca = certifi.where()
     client = pymongo.MongoClient(f"mongodb+srv://desarrollo:yatelasa123@cluster0.hziaa.mongodb.net/test?authSource=admin&replicaSet=atlas-8o2ch6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true",tlsCAFILE=ca)
     db = client.get_database('PREVIVALE')
@@ -106,7 +108,12 @@ def searchHistorial(estate, year, month):
     fecha_dt_inicio = datetime.strptime(fecha_inicio,'%Y-%m-%d %H:%M:%S')
     fecha_dt_fin = datetime.strptime(fecha_fin,'%Y-%m-%d %H:%M:%S')
 
-    consulta = {
+    if estate == "Todos":
+        consulta = {
+            "load_date" : {"$gte" : fecha_dt_inicio, "$lte" : fecha_dt_fin}
+            }
+    else:
+        consulta = {
         "state": estate,
         "load_date" : {"$gte" : fecha_dt_inicio, "$lte" : fecha_dt_fin}
         }
