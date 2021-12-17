@@ -30,7 +30,7 @@ class Historial(BaseModel):
     month: str
     state: str
 class DetalleHistorial(BaseModel):
-    folio: int
+    folio: str
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
