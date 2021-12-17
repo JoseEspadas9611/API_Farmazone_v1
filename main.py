@@ -29,6 +29,8 @@ class Historial(BaseModel):
     year: int
     month: str
     state: str
+class DetalleHistorial(BaseModel):
+    folio: int
 
 def someProducts(db,uid,password):
     someProducts = models.execute_kw(db,uid,password,'stock.quant', 'search_read',
@@ -183,7 +185,7 @@ async def get_historial(historial:Historial):
     return result_format
 
 @app.post("/api/pruebaAPI/DetalleHistorial")
-async def get_historial(historial:Historial):
+async def get_historial(detalle:DetalleHistorial):
     result_format = {"data":[{
         "fecha_solicitud":"04/06/2021",
         "folio":"002510",
