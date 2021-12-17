@@ -177,6 +177,7 @@ async def update_item(item:Item):
 
 @app.post("/api/pruebaAPI/BuscarHistorial")
 async def get_historial(historial:Historial):
+    print("Datos de Julio",historial)
     result = searchHistorial(historial.state,historial.year,historial.month)
     result_format = {"data":result}
     return result_format
